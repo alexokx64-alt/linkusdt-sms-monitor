@@ -29,6 +29,15 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: python main.py
+        
+      - name: Test Telegram message
+        if: success()
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          python -c "import os,requests; r=requests.post('https://api.telegram.org/bot'+os.environ['BOT_TOKEN']+'/sendMessage', data={'chat_id':os.environ['CHAT_ID'],'text':'Тест OK: LINKUSDT SMC Monitor подключён к Telegram.'}, timeout=15); print(r.text); r.raise_for_status()"
+
 
       - name: Save state
         run: |
